@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'AI Marketing Studio' %></title>
+    <meta name="description" content="Generate professional marketing visuals and social media posts with AI.">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <% if (typeof page !== 'undefined' && page === 'landing') { %>
+    <link rel="stylesheet" href="/css/landing.css">
+    <% } %>
+    <% if (typeof page !== 'undefined' && page === 'dashboard') { %>
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <% } %>
+    <% if (typeof page !== 'undefined' && page === 'auth') { %>
+    <link rel="stylesheet" href="/css/auth.css">
+    <% } %>
+</head>
+<body>

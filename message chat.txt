@@ -1,0 +1,195 @@
+"""
+
+Organise les images de before/ et after/ selon la numérotation du metadata.jsonl
+
+(0001.jpg, 0002.jpg, ...), en conservant avant/après alignés sur le même index.
+
+
+
+A lancer dans Colab, apres avoir monte le Drive :
+
+    from google.colab import drive
+
+    drive.mount('/content/drive')
+
+"""
+
+
+
+import os
+
+import re
+
+import json
+
+import shutil
+
+from PIL import Image
+
+
+
+# ---------- CONFIG A ADAPTER ----------
+
+BASE_DIR = "/content/drive/MyDrive/stage2026/dataset"
+
+
+
+BEFORE_SRC = os.path.join(BASE_DIR, "before")
+
+AFTER_SRC = os.path.join(BASE_DIR, "after")
+
+
+
+BEFORE_DST = os.path.join(BASE_DIR, "before_clean")
+
+AFTER_DST = os.path.join(BASE_DIR, "after_clean")
+
+
+
+METADATA_PATH = os.path.join(BASE_DIR, "metadata.jsonl")  # le fichier fourni
+
+# ---------------------------------------
+
+
+
+os.makedirs(BEFORE_DST, exist_ok=True)
+
+os.makedirs(AFTER_DST, exist_ok=True)
+
+
+
+
+
+def build_mapping_from_metadata(metadata_path):
+
+    """
+
+    Lit metadata.jsonl (before/XXXX.jpg, after/XXXX.jpg, text) et reconstruit
+
+    l'ordre 1, 2, 3... -> XXXX. On suppose que l'ordre des lignes du fichier
+
+    correspond a l'ordre original 1.jfif, 2.jpg, 3.webp, etc.
+
+    """
+
+    mapping = []
+
+    with open(metadata_path, "r", encoding="utf-8") as f:
+
+        for i, line in enumerate(f, start=1):
+
+            line = line.strip()
+
+            if not line:
+
+                continue
+
+            data = json.loads(line)
+
+            new_name = os.path.basename(data["before"])  # ex: 0001.jpg
+
+            mapping.append((i, new_name))
+
+    return mapping
+
+
+
+
+
+def find_source_file(folder, index):
+
+    """
+
+    Cherche un fichier dont le nom commence par 'index' suivi d'une extension
+
+    image (peu importe la casse/extension), ex: 1.jfif, 1.jpg, 01.png...
+
+    """
+
+    exts = (".jpg", ".jpeg", ".png", ".webp", ".jfif", ".avif", ".bmp", ".gif")
+
+    candidates = []
+
+    for fname in os.listdir(folder):
+
+        name, ext = os.path.splitext(fname)
+
+        if ext.lower() in exts and re.fullmatch(rf"0*{index}", name):
+
+            candidates.append(fname)
+
+    return candidates[0] if candidates else None
+
+
+
+
+
+def convert_and_save(src_path, dst_path):
+
+    """Ouvre l'image (quel que soit le format) et l'enregistre en .jpg propre."""
+
+    img = Image.open(src_path).convert("RGB")
+
+    img.save(dst_path, "JPEG", quality=95)
+
+
+
+
+
+def organize(src_folder, dst_folder, mapping, label):
+
+    missing = []
+
+    for index, new_name in mapping:
+
+        src_name = find_source_file(src_folder, index)
+
+        if src_name is None:
+
+            missing.append(index)
+
+            continue
+
+        src_path = os.path.join(src_folder, src_name)
+
+        dst_path = os.path.join(dst_folder, new_name)
+
+        try:
+
+            convert_and_save(src_path, dst_path)
+
+        except Exception as e:
+
+            print(f"[{label}] erreur sur {src_path}: {e}")
+
+            missing.append(index)
+
+
+
+    print(f"[{label}] {len(mapping) - len(missing)}/{len(mapping)} images traitees.")
+
+    if missing:
+
+        print(f"[{label}] images manquantes pour les index: {missing}")
+
+
+
+
+
+if __name__ == "__main__":
+
+    mapping = build_mapping_from_metadata(METADATA_PATH)
+
+    print(f"{len(mapping)} entrees trouvees dans metadata.jsonl")
+
+
+
+    organize(BEFORE_SRC, BEFORE_DST, mapping, "before")
+
+    organize(AFTER_SRC, AFTER_DST, mapping, "after")
+
+
+
+    print("\nTermine. Verifie before_clean/ et after_clean/, puis remplace")
+
+    print("before/ et after/ par ces versions si tout est correct.")  est ce que ce code est correcte , et aussi est il obligatoire de  faire le  

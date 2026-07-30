@@ -1,0 +1,35 @@
+<header class="header">
+    <!-- Hamburger for mobile -->
+    <button class="sidebar-toggle" id="hamburger-menu-btn" style="display:none;padding:0.5rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:20px;height:20px;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+    </button>
+
+    <!-- Search Bar -->
+    <div class="header-search">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
+        </svg>
+        <input type="text" class="input-field" id="header-search-input" placeholder="Search products, history...">
+    </div>
+
+    <!-- Right Actions -->
+    <div class="header-actions">
+        <!-- Notification Bell -->
+        <button class="btn btn-secondary btn-icon noti-btn" title="Notifications">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:20px;height:20px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+            <div class="noti-dot"></div>
+        </button>
+
+        <!-- Dark/Light Mode Toggle -->
+        <button class="btn btn-secondary btn-icon" id="theme-toggle-btn" title="Toggle theme"></button>
+
+        <!-- User avatar -->
+        <div class="header-avatar" title="<%= user.full_name %>">
+            <%= user.full_name.charAt(0).toUpperCase() %>
+        </div>
+    </div>
+</header>

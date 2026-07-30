@@ -1,0 +1,433 @@
+<%- include('partials/head', { title: 'Dashboard - AI Marketing Studio', page: 'dashboard' }) %>
+
+<!-- Inject server data into JS -->
+<script>
+window.__SERVER_DATA__ = {
+    user: <%- JSON.stringify(user) %>,
+    products: <%- JSON.stringify(products) %>,
+    history: <%- JSON.stringify(history) %>,
+    stats: <%- JSON.stringify(stats) %>
+};
+</script>
+
+<div id="app-layout">
+    <%- include('partials/sidebar') %>
+
+    <main class="main-area">
+        <%- include('partials/header') %>
+
+        <!-- ============================================================ -->
+        <!-- VIEW: HOME -->
+        <!-- ============================================================ -->
+        <div id="view-home" class="content-pane">
+            <div class="welcome-banner">
+                <div class="welcome-info">
+                    <h2>Welcome back, <%= user.full_name.split(' ')[0] %>! 👋</h2>
+                    <p>Your AI workspace is ready. Start creating professional marketing content.</p>
+                </div>
+                <button class="btn btn-primary" id="qa-upload-prod">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    Upload Product
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="metrics-grid">
+                <div class="card">
+                    <div class="metric-card-label">Total Products</div>
+                    <div class="metric-card-val" id="stat-products"><%= stats.productsCount %></div>
+                </div>
+                <div class="card">
+                    <div class="metric-card-label">Images Generated</div>
+                    <div class="metric-card-val" id="stat-images"><%= stats.imagesCount %></div>
+                </div>
+                <div class="card">
+                    <div class="metric-card-label">Posts Generated</div>
+                    <div class="metric-card-val" id="stat-posts"><%= stats.postsCount %></div>
+                </div>
+                <div class="card">
+                    <div class="metric-card-label">Total Generations</div>
+                    <div class="metric-card-val" id="stat-total"><%= stats.imagesCount + stats.postsCount %></div>
+                </div>
+            </div>
+
+            <!-- Chart + Quick Actions -->
+            <div class="dashboard-grid">
+                <div class="card chart-card">
+                    <div class="chart-header">
+                        <h3>Generation Activity</h3>
+                        <span style="font-size:0.775rem;color:var(--text-muted);">Last 7 months</span>
+                    </div>
+                    <div class="chart-wrapper" id="dashboard-activity-chart"></div>
+                </div>
+                <div class="card quick-actions-card">
+                    <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.75rem;">Quick Actions</h3>
+                    <button class="quick-action-btn" id="qa-gen-image">
+                        <div class="quick-action-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z"/></svg>
+                        </div>
+                        <div class="quick-action-details">
+                            <h4>AI Image Generator</h4>
+                            <p>Render products in studio settings</p>
+                        </div>
+                    </button>
+                    <button class="quick-action-btn" id="qa-gen-post">
+                        <div class="quick-action-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+                        </div>
+                        <div class="quick-action-details">
+                            <h4>AI Post Generator</h4>
+                            <p>Write engaging social media copy</p>
+                        </div>
+                    </button>
+                    <button class="quick-action-btn" onclick="window.App?.switchView('products')">
+                        <div class="quick-action-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
+                        </div>
+                        <div class="quick-action-details">
+                            <h4>Manage Products</h4>
+                            <p>View and organize your product catalog</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent History -->
+            <div class="card">
+                <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:1rem;">Recent Generations</h3>
+                <div id="recent-history-list">
+                    <% if (history.length === 0) { %>
+                    <div class="empty-state" style="border:none;padding:2rem 0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <h3>No generations yet</h3>
+                        <p>Use the AI Image or Post Generator to create your first piece of content.</p>
+                    </div>
+                    <% } else { %>
+                    <% history.slice(0, 5).forEach(item => { %>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:0.85rem 0;border-bottom:1px solid var(--border-color);">
+                        <div style="display:flex;align-items:center;gap:0.75rem;">
+                            <span class="badge <%= item.type === 'image' ? 'badge-primary' : 'badge-accent' %>"><%= item.type %></span>
+                            <span style="font-size:0.875rem;font-weight:500;"><%= item.title %></span>
+                        </div>
+                        <span style="font-size:0.75rem;color:var(--text-muted);"><%= new Date(item.created_at).toLocaleDateString() %></span>
+                    </div>
+                    <% }) %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW: PRODUCTS -->
+        <!-- ============================================================ -->
+        <div id="view-products" class="content-pane" style="display:none;">
+            <div class="view-header">
+                <div class="view-header-title">
+                    <h2>Product Gallery</h2>
+                    <p>Manage your products to generate marketing content.</p>
+                </div>
+                <button class="btn btn-primary" id="float-add-product-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    Add Product
+                </button>
+            </div>
+            <div class="product-grid" id="products-grid-list"></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW: AI IMAGE GENERATOR -->
+        <!-- ============================================================ -->
+        <div id="view-generator" class="content-pane" style="display:none;">
+            <div class="view-header">
+                <div class="view-header-title">
+                    <h2>AI Image Studio</h2>
+                    <p>Generate premium commercial shots for your products.</p>
+                </div>
+            </div>
+            <div class="generator-layout">
+                <!-- Config Panel -->
+                <div class="card generator-config">
+                    <div>
+                        <div class="config-section-title">1. Upload Product</div>
+                        <div class="upload-area" id="generator-upload-zone">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:40px;height:40px;stroke:var(--text-muted);margin-bottom:0.75rem;"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25z"/></svg>
+                                <p style="font-size:0.85rem;font-weight:500;color:var(--text-secondary);">Click or drag & drop</p>
+                                <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.25rem;">PNG, JPG up to 10MB</p>
+                            </div>
+                            <img id="generator-preview-img" class="upload-area-preview" src="" alt="">
+                            <button id="generator-clear-upload" class="upload-area-clear" title="Clear">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width:12px;height:12px;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                            <input type="file" id="generator-file-input" style="display:none;" accept="image/*">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="config-section-title">2. Describe the Scene</div>
+                        <textarea class="input-field" id="generator-prompt-input" placeholder="e.g. product on marble with golden hour lighting and orchid flowers..."></textarea>
+                    </div>
+                    <div>
+                        <div class="config-section-title">3. Style Preset</div>
+                        <div class="style-selector-grid" id="style-selector">
+                            <div class="style-card active" data-value="luxury">Luxury</div>
+                            <div class="style-card" data-value="minimalist">Minimalist</div>
+                            <div class="style-card" data-value="nature">Nature</div>
+                            <div class="style-card" data-value="technology">Technology</div>
+                            <div class="style-card" data-value="food">Food</div>
+                            <div class="style-card" data-value="fashion">Fashion</div>
+                            <div class="style-card" data-value="cosmetics">Cosmetics</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="config-section-title">4. Background</div>
+                        <select class="input-field" id="generator-bg-select">
+                            <option value="studio">Studio Solid</option>
+                            <option value="marble">Luxury Marble</option>
+                            <option value="wood">Warm Wood</option>
+                            <option value="glass">Glassmorphism</option>
+                            <option value="nature_bg">Nature Forest</option>
+                            <option value="gradient">Soft Gradient</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="config-section-title">5. Lighting</div>
+                        <select class="input-field" id="generator-light-select">
+                            <option value="golden">Golden Hour</option>
+                            <option value="studio_light">Studio Bright</option>
+                            <option value="soft">Soft Shadows</option>
+                            <option value="neon">Neon Glow</option>
+                            <option value="cinematic">Cinematic</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary btn-full btn-lg" id="generator-submit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-11.825a.9.9 0 00-1.347-1.17l-5.94 4.028a.9.9 0 01-1.17-.187l-3.51-3.51A.9.9 0 004.5 9.75h5.313"/></svg>
+                        Generate Image
+                    </button>
+                </div>
+
+                <!-- Preview Canvas -->
+                <div class="generator-workspace">
+                    <div class="card result-image-card">
+                        <div class="result-placeholder" id="generator-result-placeholder">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25z"/></svg>
+                            <h3>Workspace Empty</h3>
+                            <p>Configure options and press Generate.</p>
+                        </div>
+                        <div class="result-loader" id="generator-result-loader">
+                            <div class="loader-spinner"></div>
+                            <h3 style="font-weight:600;margin-bottom:0.5rem;">Generating your scene...</h3>
+                            <p style="font-size:0.85rem;color:var(--text-secondary);">Applying lighting and shadows</p>
+                            <div style="width:240px;margin-top:1.5rem;">
+                                <div class="progress-container"><div class="progress-bar" id="generator-progress-bar" style="width:0%;"></div></div>
+                            </div>
+                        </div>
+                        <img id="generator-result-image" class="result-image-display" src="" alt="Generated">
+                    </div>
+                    <div class="workspace-actions">
+                        <button class="btn btn-secondary" id="generator-regen-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+                            Regenerate
+                        </button>
+                        <a id="generator-download-btn" class="btn btn-primary" download="ai-generated.png">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                            Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW: AI POST GENERATOR -->
+        <!-- ============================================================ -->
+        <div id="view-post-generator" class="content-pane" style="display:none;">
+            <div class="view-header">
+                <div class="view-header-title">
+                    <h2>AI Post Copywriter</h2>
+                    <p>Generate high-converting social media copy instantly.</p>
+                </div>
+            </div>
+            <div class="generator-layout">
+                <div class="card generator-config">
+                    <div class="form-group">
+                        <label for="post-product-select">Select Product</label>
+                        <select class="input-field" id="post-product-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Social Platform</label>
+                        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;" id="post-platform-tabs">
+                            <span class="badge badge-primary" style="cursor:pointer;" data-platform="Instagram">Instagram</span>
+                            <span class="badge badge-muted" style="cursor:pointer;" data-platform="LinkedIn">LinkedIn</span>
+                            <span class="badge badge-muted" style="cursor:pointer;" data-platform="Facebook">Facebook</span>
+                            <span class="badge badge-muted" style="cursor:pointer;" data-platform="TikTok">TikTok</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="post-lang-select">Language</label>
+                        <select class="input-field" id="post-lang-select">
+                            <option value="English">English</option>
+                            <option value="French">French</option>
+                            <option value="Arabic">Arabic</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="post-tone-select">Brand Tone</label>
+                        <select class="input-field" id="post-tone-select">
+                            <option value="Luxury">Luxury & Premium</option>
+                            <option value="Professional">Professional</option>
+                            <option value="Friendly">Friendly & Social</option>
+                            <option value="Minimal">Minimalist</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary btn-full btn-lg" id="post-submit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z"/></svg>
+                        Generate Post
+                    </button>
+                </div>
+                <div class="generator-workspace">
+                    <div class="card">
+                        <h3 style="font-size:1rem;font-weight:600;margin-bottom:1rem;">Generated Copy</h3>
+                        <div class="post-generator-output" id="post-output-card">Press Generate to craft your marketing post.</div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;">
+                            <span id="post-char-counter" style="font-size:0.775rem;color:var(--text-muted);">0 characters</span>
+                            <button class="btn btn-secondary btn-sm" id="post-copy-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25a2.25 2.25 0 00-2.25 2.25v6.75A2.25 2.25 0 005.25 18.75h10.5z"/></svg>
+                                Copy Text
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h4 style="font-size:0.85rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:0.75rem;">Hashtags</h4>
+                        <div class="post-generator-tags" id="post-tags-container">
+                            <span class="post-tag">#AIMarketing</span>
+                            <span class="post-tag">#ContentCreation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW: TEMPLATES -->
+        <!-- ============================================================ -->
+        <div id="view-templates" class="content-pane" style="display:none;">
+            <div class="view-header">
+                <div class="view-header-title">
+                    <h2>Creative Templates</h2>
+                    <p>Click any template to auto-fill the Image Generator.</p>
+                </div>
+            </div>
+            <div class="template-grid" id="templates-grid-list"></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW: HISTORY -->
+        <!-- ============================================================ -->
+        <div id="view-history" class="content-pane" style="display:none;">
+            <div class="view-header">
+                <div class="view-header-title">
+                    <h2>Generation History</h2>
+                    <p>All your generated images and marketing copies.</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;" id="history-filter-tabs">
+                <span class="badge badge-primary" style="cursor:pointer;" data-filter="all">All</span>
+                <span class="badge badge-muted" style="cursor:pointer;" data-filter="images">Images</span>
+                <span class="badge badge-muted" style="cursor:pointer;" data-filter="posts">Posts</span>
+            </div>
+            <div id="history-timeline-list"></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW: ANALYTICS -->
+        <!-- ============================================================ -->
+        <div id="view-analytics" class="content-pane" style="display:none;">
+            <div class="view-header">
+                <div class="view-header-title">
+                    <h2>Analytics</h2>
+                    <p>Real insights from your workspace activity.</p>
+                </div>
+            </div>
+            <div class="dashboard-grid">
+                <div class="card chart-card">
+                    <div class="chart-header"><h3>Monthly Generation Trends</h3></div>
+                    <div class="chart-wrapper" id="analytics-trends-chart"></div>
+                </div>
+                <div class="card chart-card">
+                    <div class="chart-header"><h3>Products by Category</h3></div>
+                    <div class="chart-wrapper" id="analytics-templates-chart"></div>
+                </div>
+            </div>
+            <div class="card" style="margin-top:1.5rem;">
+                <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:1rem;">Generation Details</h3>
+                <div class="table-container">
+                    <table class="modern-table" id="analytics-table">
+                        <thead><tr>
+                            <th>Title</th><th>Type</th><th>Date</th><th>Status</th>
+                        </tr></thead>
+                        <tbody id="analytics-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW: SETTINGS -->
+        <!-- ============================================================ -->
+        <div id="view-settings" class="content-pane" style="display:none;">
+            <div class="view-header">
+                <div class="view-header-title">
+                    <h2>Settings</h2>
+                    <p>Manage your account and preferences.</p>
+                </div>
+            </div>
+            <div class="card settings-tabs-container">
+                <div class="settings-tab-list">
+                    <button class="settings-tab-btn active" data-tab="profile">Profile</button>
+                    <button class="settings-tab-btn" data-tab="security">Password</button>
+                    <button class="settings-tab-btn" data-tab="appearance">Appearance</button>
+                </div>
+                <div>
+                    <div class="settings-panel active" id="settings-panel-profile">
+                        <h3 style="font-size:1.15rem;font-weight:600;margin-bottom:1.5rem;">Profile Details</h3>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="input-field" value="<%= user.full_name %>">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" class="input-field" value="<%= user.email %>" readonly style="opacity:0.7;">
+                        </div>
+                        <button class="btn btn-primary">Save Changes</button>
+                    </div>
+                    <div class="settings-panel" id="settings-panel-security">
+                        <h3 style="font-size:1.15rem;font-weight:600;margin-bottom:1.5rem;">Change Password</h3>
+                        <div class="form-group"><label>Current Password</label><input type="password" class="input-field"></div>
+                        <div class="form-group"><label>New Password</label><input type="password" class="input-field"></div>
+                        <div class="form-group"><label>Confirm Password</label><input type="password" class="input-field"></div>
+                        <button class="btn btn-primary">Update Password</button>
+                    </div>
+                    <div class="settings-panel" id="settings-panel-appearance">
+                        <h3 style="font-size:1.15rem;font-weight:600;margin-bottom:1.5rem;">Appearance</h3>
+                        <div class="form-group">
+                            <label>Color Theme</label>
+                            <div style="display:flex;gap:1rem;margin-top:0.5rem;">
+                                <button class="btn btn-secondary" id="set-light-theme">☀️ Light Mode</button>
+                                <button class="btn btn-secondary" id="set-dark-theme">🌙 Dark Mode</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<%- include('partials/modals') %>
+
+<script src="/js/charts.js" type="module"></script>
+<script src="/js/generator.js" type="module"></script>
+<script src="/js/app.js" type="module"></script>
+</body>
+</html>

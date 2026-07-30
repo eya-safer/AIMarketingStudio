@@ -1,0 +1,43 @@
+<!-- Add Product Modal -->
+<div class="modal-overlay" id="add-product-modal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3>Add New Product</h3>
+            <button class="modal-close" id="close-product-modal">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width:20px;height:20px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <form id="add-product-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="prod-name-input">Product Name *</label>
+                <input type="text" class="input-field" id="prod-name-input" name="name" placeholder="e.g. Aura Fragrance" required>
+            </div>
+            <div class="form-group">
+                <label for="prod-brand-input">Brand *</label>
+                <input type="text" class="input-field" id="prod-brand-input" name="brand" placeholder="e.g. Luxe Parfum" required>
+            </div>
+            <!-- Category fixed to Cosmetics & Beauty (single category) -->
+            <input type="hidden" name="category" value="Cosmetics">
+            <div class="form-group">
+                <label>Product Photo</label>
+                <div class="upload-area" id="modal-upload-zone" style="min-height:120px;">
+                    <div id="modal-upload-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:32px;height:32px;stroke:var(--text-muted);margin-bottom:0.5rem;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        <p style="font-size:0.85rem;color:var(--text-secondary);">Click to upload</p>
+                    </div>
+                    <img id="prod-photo-preview" src="" alt="" style="display:none;width:100%;height:120px;object-fit:contain;border-radius:var(--radius-md);">
+                    <input type="file" id="prod-photo-input" name="image" accept="image/*" style="display:none;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-product-form">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="submit-product-btn">Add Product</button>
+            </div>
+        </form>
+    </div>
+</div>
