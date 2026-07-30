@@ -33,6 +33,15 @@
       "category": "Cosmetics",
       "image_path": "/assets/uploads/1784627199111-806706.jpg",
       "created_at": "2026-07-21T09:46:39.128Z"
+    },
+    {
+      "id": 3,
+      "user_id": 2,
+      "name": "deodorant",
+      "brand": "rexona",
+      "category": "Cosmetics",
+      "image_path": "/assets/uploads/1785411064176-661769.jpeg",
+      "created_at": "2026-07-30T11:31:04.231Z"
     }
   ],
   "history": [
@@ -46,6 +55,61 @@
       "content": "",
       "status": "Completed",
       "created_at": "2026-07-14T11:39:26.157Z"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "type": "post",
+      "title": "serum bakina — Instagram Luxury",
+      "prompt": "Product: serum bakina | Platform: Instagram | Tone: Luxury | Language: English",
+      "preview_path": "",
+      "content": "Elevate your ritual. ✨\n\nDiscover the transformative power of Serum Bakina—a masterclass in skincare artistry. Crafted for those who demand nothing less than perfection, our potent elixir breathes new life into your complexion, revealing a radiant, luminous glow that feels as exquisite as it looks.\n\nIndulge in the luxury you deserve. Your most refined skin awaits.\n\n#SerumBakina #LuxurySkincare #CleanBeauty",
+      "status": "Completed",
+      "created_at": "2026-07-30T11:17:14.053Z"
+    },
+    {
+      "id": 3,
+      "user_id": 2,
+      "type": "post",
+      "title": "serum bakina — Instagram Luxury",
+      "prompt": "Product: serum bakina | Platform: Instagram | Tone: Luxury | Language: French",
+      "preview_path": "",
+      "content": "Voici une proposition de post Instagram, conçue pour évoquer le luxe, l'élégance et l'efficacité :\n\n***\n\nL’essence même de la perfection cutanée. ✨\n\nDécouvrez le Sérum Bakina, une alliance rare entre science de pointe et ingrédients précieux. Conçu pour celles et ceux qui exigent l'excellence, ce soin divin pénètre délicatement votre peau pour révéler un éclat incomparable et une texture sublimée.\n\nOffrez à votre visage le rituel qu’il mérite. Le luxe ne se voit pas seulement, il se ressent.\n\nDisponible dès maintenant. Votre transformation commence ici. 🕊️\n\n#SerumBakina #SkincareDeLuxe #BeautePrestigieuse",
+      "status": "Completed",
+      "created_at": "2026-07-30T11:18:00.130Z"
+    },
+    {
+      "id": 4,
+      "user_id": 2,
+      "type": "post",
+      "title": "svr gel nettoyant — Facebook Luxury",
+      "prompt": "Product: svr gel nettoyant | Description: peau seche \nprix=25dt | Platform: Facebook | Tone: Luxury | Language: English",
+      "preview_path": "",
+      "content": "Elevate your daily ritual with the SVR Gel Nettoyant. \n\nSpecially formulated to provide gentle yet deep purification, this cleanser is the ultimate solution for dry skin, leaving your complexion feeling soft, nourished, and perfectly balanced. Experience the luxury of dermatologist-approved care at the touch of your fingertips.\n\nAvailable now for 25 DT. Indulge in the science of radiant skin.\n\n#SVR #SkincareRoutine #DrySkinCare",
+      "status": "Completed",
+      "created_at": "2026-07-30T11:25:31.395Z"
+    },
+    {
+      "id": 5,
+      "user_id": 2,
+      "type": "post",
+      "title": "rexona — Facebook Minimal",
+      "prompt": "Product: rexona | Description: prix=25dt | Platform: Facebook | Tone: Minimal | Language: French",
+      "preview_path": "",
+      "content": "Fraîcheur longue durée avec Rexona. 🧊\n\nSeulement 25dt.\n\n#Rexona #Fraicheur #Protection",
+      "status": "Completed",
+      "created_at": "2026-07-30T11:36:40.501Z"
+    },
+    {
+      "id": 6,
+      "user_id": 2,
+      "type": "post",
+      "title": "rexona — TikTok Luxury",
+      "prompt": "Product: rexona | Description:  | Platform: TikTok | Tone: Luxury | Language: French",
+      "preview_path": "",
+      "content": "L’élégance est dans les détails. 🕊️✨\n\nParce qu’une confiance inébranlable est l’accessoire le plus précieux, Rexona sublime votre quotidien. Restez impeccable, restez audacieuse, restez vous-même. Le luxe, c’est de ne jamais avoir à s’inquiéter.\n\n#Rexona #LuxuryLifestyle #Confidence",
+      "status": "Completed",
+      "created_at": "2026-07-30T11:43:13.899Z"
     }
   ]
 }

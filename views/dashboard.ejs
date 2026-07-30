@@ -254,6 +254,14 @@ window.__SERVER_DATA__ = {
                         <select class="input-field" id="post-product-select"></select>
                     </div>
                     <div class="form-group">
+                        <label for="post-product-name">Product Name</label>
+                        <input class="input-field" type="text" id="post-product-name" placeholder="Enter product name or choose one above">
+                    </div>
+                    <div class="form-group">
+                        <label for="post-product-description">Product Description</label>
+                        <textarea class="input-field" id="post-product-description" rows="3" placeholder="Add price, features and selling points"></textarea>
+                    </div>
+                    <div class="form-group">
                         <label>Social Platform</label>
                         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;" id="post-platform-tabs">
                             <span class="badge badge-primary" style="cursor:pointer;" data-platform="Instagram">Instagram</span>
@@ -307,18 +315,7 @@ window.__SERVER_DATA__ = {
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- VIEW: TEMPLATES -->
-        <!-- ============================================================ -->
-        <div id="view-templates" class="content-pane" style="display:none;">
-            <div class="view-header">
-                <div class="view-header-title">
-                    <h2>Creative Templates</h2>
-                    <p>Click any template to auto-fill the Image Generator.</p>
-                </div>
-            </div>
-            <div class="template-grid" id="templates-grid-list"></div>
-        </div>
+        <!-- Templates view removed -->
 
         <!-- ============================================================ -->
         <!-- VIEW: HISTORY -->
@@ -355,7 +352,7 @@ window.__SERVER_DATA__ = {
                 </div>
                 <div class="card chart-card">
                     <div class="chart-header"><h3>Products by Category</h3></div>
-                    <div class="chart-wrapper" id="analytics-templates-chart"></div>
+                    <div class="chart-wrapper" id="analytics-categories-chart"></div>
                 </div>
             </div>
             <div class="card" style="margin-top:1.5rem;">

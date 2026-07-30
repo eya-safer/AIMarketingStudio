@@ -24,7 +24,6 @@ class AppController {
         this.renderProducts();
         this.renderHistory();
         this.renderActivities();
-        this.renderTemplates();
         this.updateCreditsUI();
         this.populateProductSelectors();
         
@@ -483,54 +482,7 @@ class AppController {
         });
     }
     
-    // Dynamic templates rendering
-    renderTemplates() {
-        const tempGrid = document.getElementById('templates-grid-list');
-        if (!tempGrid) return;
-        
-        tempGrid.innerHTML = '';
-        MockData.templates.forEach(temp => {
-            const card = document.createElement('div');
-            card.className = 'card template-card card-hover';
-            card.innerHTML = `
-                <div class="template-img-wrapper">
-                    <img src="${temp.image}" alt="${temp.title}">
-                </div>
-                <div class="template-info">
-                    <h4>${temp.title}</h4>
-                    <p>${temp.category}</p>
-                </div>
-            `;
-            
-            // Selecting template transfers state to Image Generator
-            card.addEventListener('click', () => {
-                this.activateNavRoute('generator');
-                this.switchView('generator');
-                
-                const promptInput = document.getElementById('generator-prompt-input');
-                const styleCard = document.querySelector(`#style-selector .style-card[data-value="${temp.style}"]`);
-                const bgSelect = document.getElementById('generator-bg-select');
-                const lightSelect = document.getElementById('generator-light-select');
-                
-                if (promptInput) promptInput.value = temp.prompt;
-                if (styleCard) {
-                    document.querySelectorAll('#style-selector .style-card').forEach(c => c.classList.remove('active'));
-                    styleCard.classList.add('active');
-                    GenerationManager.selectedStyle = temp.style;
-                }
-                if (bgSelect) {
-                    bgSelect.value = temp.background;
-                    GenerationManager.selectedBg = temp.background;
-                }
-                if (lightSelect) {
-                    lightSelect.value = temp.lighting;
-                    GenerationManager.selectedLighting = temp.lighting;
-                }
-            });
-            
-            tempGrid.appendChild(card);
-        });
-    }
+    // Templates removed
     
     logActivity(action, target, time, type) {
         this.activities.unshift({ action, target, time, type });

@@ -3,12 +3,7 @@ import { initDashboardCharts, initAnalyticsCharts } from './charts.js';
 import { GenerationManager } from './generator.js';
 
 // Templates config (static)
-const TEMPLATES = [
-    { id: 'temp-1', title: 'Luxury Cosmetics', category: 'Cosmetics', image: '/assets/perfume_studio.png', prompt: 'High-end perfume bottle on floating marble, water splash ripples, golden light, orchid flowers background.', style: 'luxury', background: 'marble', lighting: 'golden' },
-    { id: 'temp-2', title: 'Modern Tech Concept', category: 'Technology', image: '/assets/headphones.png', prompt: 'Premium wireless headphones with neon geometric shapes, dark matte background, futuristic neon glow.', style: 'technology', background: 'glass', lighting: 'neon' },
-    { id: 'temp-3', title: 'Organic Skincare', category: 'Cosmetics', image: '/assets/cream.png', prompt: 'Skincare jar on beige travertine stone, palm leaf shadow, neutral organic plaster background, soft light.', style: 'minimalist', background: 'nature_bg', lighting: 'soft' },
-    { id: 'temp-4', title: 'Luxury Watch Chrono', category: 'Fashion', image: '/assets/watch.png', prompt: 'Chronograph steel watch on dark wet slate stone, dramatic neon cyan light, rain droplets, cinematic.', style: 'luxury', background: 'wood', lighting: 'cinematic' }
-];
+// Templates removed
 
 class AppController {
     constructor() {
@@ -32,7 +27,6 @@ class AppController {
         // Initial renders
         this.renderProducts();
         this.renderHistory('all');
-        this.renderTemplates();
         this.renderAnalyticsTable();
         this.populateProductSelectors();
 
@@ -178,7 +172,7 @@ class AppController {
     // =========================================================
     async loadProducts() {
         try {
-            const res = await fetch('/api/products');
+            const res = await fetch('/api/products', { credentials: 'same-origin' });
             const data = await res.json();
             if (data.success) { this.products = data.products; this.renderProducts(); this.populateProductSelectors(); }
         } catch (err) { console.error('Load products error:', err); }
@@ -231,7 +225,7 @@ class AppController {
 
         const formData = new FormData(form);
         try {
-            const res = await fetch('/api/products', { method: 'POST', body: formData });
+            const res = await fetch('/api/products', { method: 'POST', credentials: 'same-origin', body: formData });
             const data = await res.json();
             if (data.success) {
                 this.products.push(data.product);
@@ -252,7 +246,7 @@ class AppController {
     async deleteProduct(id) {
         if (!confirm('Are you sure you want to delete this product?')) return;
         try {
-            const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+            const res = await fetch(`/api/products/${id}`, { method: 'DELETE', credentials: 'same-origin' });
             const data = await res.json();
             if (data.success) {
                 this.products = this.products.filter(p => p.id !== id);
@@ -265,10 +259,17 @@ class AppController {
 
     populateProductSelectors() {
         const sel = document.getElementById('post-product-select');
+        const nameInput = document.getElementById('post-product-name');
         if (!sel) return;
         sel.innerHTML = this.products.length === 0
             ? '<option value="">No products — add one first</option>'
             : this.products.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        if (sel && nameInput) {
+            sel.addEventListener('change', () => {
+                const selectedText = sel.options[sel.selectedIndex]?.text || '';
+                if (selectedText) nameInput.value = selectedText;
+            });
+        }
     }
 
     openAddProductModal() {
@@ -289,7 +290,7 @@ class AppController {
     // =========================================================
     async loadHistory() {
         try {
-            const res = await fetch('/api/history');
+            const res = await fetch('/api/history', { credentials: 'same-origin' });
             const data = await res.json();
             if (data.success) { this.history = data.history; this.renderHistory('all'); }
         } catch (err) { console.error('Load history error:', err); }
@@ -341,7 +342,7 @@ class AppController {
 
     async deleteHistory(id) {
         try {
-            const res = await fetch(`/api/history/${id}`, { method: 'DELETE' });
+            const res = await fetch(`/api/history/${id}`, { method: 'DELETE', credentials: 'same-origin' });
             const data = await res.json();
             if (data.success) {
                 this.history = this.history.filter(h => h.id !== id);
@@ -356,6 +357,7 @@ class AppController {
         try {
             const res = await fetch('/api/history', {
                 method: 'POST',
+                credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(entry)
             });
@@ -378,7 +380,7 @@ class AppController {
     // =========================================================
     async loadAndRenderAnalytics() {
         try {
-            const res = await fetch('/api/analytics');
+            const res = await fetch('/api/analytics', { credentials: 'same-origin' });
             const data = await res.json();
             if (data.success) {
                 setTimeout(() => initAnalyticsCharts(data.monthly, data.categories), 50);
@@ -402,32 +404,7 @@ class AppController {
         `).join('');
     }
 
-    renderTemplates() {
-        const grid = document.getElementById('templates-grid-list');
-        if (!grid) return;
-        TEMPLATES.forEach(temp => {
-            const card = document.createElement('div');
-            card.className = 'card template-card card-hover';
-            card.innerHTML = `<div class="template-img-wrapper"><img src="${temp.image}" alt="${temp.title}"></div><div class="template-info"><h4>${temp.title}</h4><p>${temp.category}</p></div>`;
-            card.addEventListener('click', () => {
-                this.activateNav('generator');
-                this.switchView('generator');
-                const promptInput = document.getElementById('generator-prompt-input');
-                const styleCard = document.querySelector(`#style-selector .style-card[data-value="${temp.style}"]`);
-                if (promptInput) promptInput.value = temp.prompt;
-                if (styleCard) {
-                    document.querySelectorAll('#style-selector .style-card').forEach(c => c.classList.remove('active'));
-                    styleCard.classList.add('active');
-                }
-                const bgSel = document.getElementById('generator-bg-select');
-                const lightSel = document.getElementById('generator-light-select');
-                if (bgSel) bgSel.value = temp.background;
-                if (lightSel) lightSel.value = temp.lighting;
-                if (GenerationManager) { GenerationManager.selectedStyle = temp.style; GenerationManager.selectedBg = temp.background; GenerationManager.selectedLighting = temp.lighting; }
-            });
-            grid.appendChild(card);
-        });
-    }
+    // Templates feature removed
 
     updateStat(id, value) {
         const el = document.getElementById(id);

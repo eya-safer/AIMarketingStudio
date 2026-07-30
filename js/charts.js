@@ -384,7 +384,7 @@ export function initAnalyticsCharts() {
         color: '#00C9A7',
         hoverColor: '#02E4BD'
     };
-    SvgChartEngine.renderBarChart('analytics-templates-chart', templatesData);
+    SvgChartEngine.renderBarChart('analytics-categories-chart', templatesData);
 }
 
 // Global Resize listener to redraw charts and keep them responsive

@@ -179,7 +179,11 @@ app.use(session({
   secret: 'ai-marketing-studio-secret-key-2026',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 } // 7 days
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    secure: false,
+    sameSite: 'lax'
+  }
 }));
 
 // Auth guard middleware
@@ -421,13 +425,13 @@ app.post('/api/generate', requireAuth, async (req, res) => {
 });
 
 app.post('/api/generate-post', requireAuth, async (req, res) => {
-  const { product, platform, language, tone } = req.body || {};
+  const { product, platform, language, tone, description } = req.body || {};
   if (!product || !platform || !language || !tone) {
     return res.status(400).json({ success: false, error: 'Missing product, platform, language, or tone.' });
   }
 
   try {
-    const generatedText = await generatePostCopy({ product, platform, language, tone });
+    const generatedText = await generatePostCopy({ product, platform, language, tone, description });
 
     res.json({ success: true, generatedText });
   } catch (err) {

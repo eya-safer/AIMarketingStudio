@@ -67,49 +67,7 @@ const MockData = {
         { id: 'cinematic', name: 'Cinematic' }
     ],
 
-    // Marketing design templates
-    templates: [
-        {
-            id: 'temp-1',
-            title: 'Luxury Cosmetics',
-            category: 'Cosmetics',
-            image: './assets/perfume_studio.png',
-            prompt: 'High-end cosmetics bottle sitting on a floating marble pedestal, water splash ripples around, soft morning sunlight, premium photography, elegant look, white and lavender color grading.',
-            style: 'luxury',
-            background: 'marble',
-            lighting: 'golden'
-        },
-        {
-            id: 'temp-2',
-            title: 'Modern Tech Concept',
-            category: 'Technology',
-            image: './assets/headphones.png',
-            prompt: 'Premium wireless headphones centered in front of abstract floating geometric shapes, matte neon light highlights, reflection on black glass base, minimal future background.',
-            style: 'technology',
-            background: 'glass',
-            lighting: 'neon'
-        },
-        {
-            id: 'temp-3',
-            title: 'Minimalist Organic Skincare',
-            category: 'Cosmetics',
-            image: './assets/cream.png',
-            prompt: 'Skincare cream jar on smooth beige clay stone, soft shadow from palm leaves, neutral organic background, gentle natural side-lighting, clean, green wellness studio.',
-            style: 'minimalist',
-            background: 'nature_bg',
-            lighting: 'soft'
-        },
-        {
-            id: 'temp-4',
-            title: 'Elegant Watch Chrono',
-            category: 'Fashion',
-            image: './assets/watch.png',
-            prompt: 'Luxury steel watch on dark slate stone background, cinematic dramatic key lighting, rain droplets on surfaces, dark low key color grading, premium high-end styling.',
-            style: 'luxury',
-            background: 'wood',
-            lighting: 'cinematic'
-        }
-    ],
+    // Templates removed
 
     // History logs of generations
     history: [

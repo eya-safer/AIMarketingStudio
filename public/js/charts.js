@@ -254,14 +254,14 @@ export function initAnalyticsCharts(monthly = null, categories = null) {
 
     // Categories bar chart
     if (categories && categories.length > 0) {
-        SvgChartEngine.renderBarChart('analytics-templates-chart', {
+        SvgChartEngine.renderBarChart('analytics-categories-chart', {
             labels: categories.map(c => c.category),
             data: categories.map(c => c.count),
             color: '#00C9A7',
             hoverColor: '#02E4BD'
         });
     } else {
-        SvgChartEngine.renderBarChart('analytics-templates-chart', {
+        SvgChartEngine.renderBarChart('analytics-categories-chart', {
             labels: ['No data'],
             data: [0],
             color: '#00C9A7'

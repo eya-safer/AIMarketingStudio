@@ -126,6 +126,7 @@ export class GenerationManager {
 
                 const response = await fetch('/api/generate', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(body)
                 });
@@ -209,13 +210,16 @@ export class GenerationManager {
         const langSelect = document.getElementById('post-lang-select');
         const toneSelect = document.getElementById('post-tone-select');
         const prodSel = document.getElementById('post-product-select');
+        const productNameInput = document.getElementById('post-product-name');
+        const productDescriptionInput = document.getElementById('post-product-description');
 
         if (!outputCard) return;
 
         const language = langSelect?.value || 'English';
         const tone = toneSelect?.value || 'Luxury';
         const platform = document.querySelector('#post-platform-tabs .badge-primary')?.dataset.platform || 'Instagram';
-        const product = prodSel?.options[prodSel.selectedIndex]?.text || 'your product';
+        const product = productNameInput?.value?.trim() || prodSel?.options[prodSel.selectedIndex]?.text || 'your product';
+        const description = productDescriptionInput?.value?.trim() || '';
 
         outputCard.textContent = 'Generating marketing copy...';
         outputCard.style.opacity = '0.5';
@@ -224,8 +228,9 @@ export class GenerationManager {
         try {
             const response = await fetch('/api/generate-post', {
                 method: 'POST',
+                credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ product, platform, language, tone })
+                body: JSON.stringify({ product, platform, language, tone, description })
             });
 
             const data = await response.json();
@@ -246,7 +251,7 @@ export class GenerationManager {
             this.app?.saveHistory({
                 type: 'post',
                 title: `${product} — ${platform} ${tone}`,
-                prompt: `Product: ${product} | Platform: ${platform} | Tone: ${tone} | Language: ${language}`,
+                prompt: `Product: ${product} | Description: ${description} | Platform: ${platform} | Tone: ${tone} | Language: ${language}`,
                 preview_path: '',
                 content: copyText
             });

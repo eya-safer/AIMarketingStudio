@@ -2,7 +2,7 @@ const { GoogleGenAI } = require('@google/genai');
 const { Buffer } = require('buffer');
 
 function getGeminiApiKey() {
-  const key = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || process.env.REACT_APP_GEMINI_API_KEY;
+  const key = process.env.GEMINI_API_KEY;
   if (!key) {
     throw new Error('Gemini API key not configured. Set GEMINI_API_KEY in your .env file.');
   }
@@ -27,15 +27,16 @@ function parseBase64Image(dataUrl) {
 
 const ai = new GoogleGenAI({ apiKey: getGeminiApiKey() });
 
-async function generatePostCopy({ product, platform, language, tone }) {
+async function generatePostCopy({ product, platform, language, tone, description }) {
   if (!product || !platform || !language || !tone) {
     throw new Error('Missing parameters for post generation.');
   }
 
-  const prompt = `Write a ${tone} social media post for ${platform}, in ${language}, promoting this product: ${product}. Include 2-3 relevant hashtags at the end, on a separate line.`;
+  const details = description ? ` Use the following product details: ${description}.` : '';
+  const prompt = `Write a ${tone} social media post for ${platform} in ${language}, promoting this product called "${product}".${details} The copy should be ready to copy and paste, without any introductory sentence such as "Voici une proposition..." or similar. Include 2-3 relevant hashtags at the end, on a separate line.`;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.1-flash-lite',
     contents: prompt
   });
 
@@ -43,7 +44,11 @@ async function generatePostCopy({ product, platform, language, tone }) {
     throw new Error('Gemini did not return valid text.');
   }
 
-  return response.text.trim();
+  let text = response.text.trim();
+  text = text.replace(/^Voici une proposition de post[^\n]*\n?/i, '').trim();
+  text = text.replace(/^Here is a suggested post[^\n]*\n?/i, '').trim();
+
+  return text;
 }
 
 async function generateAdFromImage(imageDataUrl, prompt) {
