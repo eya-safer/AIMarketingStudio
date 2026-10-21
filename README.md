@@ -17,6 +17,11 @@ Application web qui aide à créer du contenu marketing pour des produits. Elle 
 - **Interface :** EJS, HTML, CSS et JavaScript
 - **Données :** stockage local JSON et SQLite pour les sessions
 - **IA :** Google Gemini pour les textes ; service externe pour les images
+## Capture
+<img width="900" height="405" alt="image" src="https://github.com/user-attachments/assets/d3c17da8-3ba4-408b-b975-52f9571a1832" />
+<img width="900" height="403" alt="image" src="https://github.com/user-attachments/assets/10f25903-f6aa-4363-8822-61b04e5f8a6b" />
+<img width="900" height="408" alt="image" src="https://github.com/user-attachments/assets/a3160475-d1e9-4dc2-a3ac-b31567c786a8" />
+
 
 ## Structure du projet
 
